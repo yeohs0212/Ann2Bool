@@ -2,11 +2,6 @@
 
 단일 세포 전사체 데이터(scRNA-seq)를 기반으로 전사 인자(TF) 중심의 유전자 조절 네트워크(GRN)를 추론하고, 이를 Boolean Network 모델로 구축하고 타겟을 발굴하는 통합 프레임워크입니다. 정상 세포에서 특정 암(예: PDAC) 등으로 진행되는 궤적 상의 핵심 조절 인자를 발굴하고, in-silico Perturbation 분석을 통해 세포 운명 제어 타겟을 탐색할 수 있습니다.
 
-## 🌟 Key Features
-* **Data Integration:** 단일 세포 발현량(AnnData)과 Monocle3 기반의 Pseudotime 궤적 데이터 통합
-* **GRN Inference:** `pySCENIC`을 활용한 세포 타입 특이적 TF-TF 상호작용 및 조절 방향(Activation/Inhibition) 추론
-* **Automated Rule Learning:** GMM(Gaussian Mixture Model)을 통한 TF 활성도 이진화 및 시간 흐름 기반 Boolean 논리 규칙 자동 학습 (Decision Tree / QMC 적용)
-* **Perturbation Analysis:** 구축된 `.bnet` 모델에서 구해지는 Attractor를 실제 세포 상태에 매핑하고, TF Knockout/Overexpression 시 특정 세포 타입으로의 전이 확률 변화 분석
 
 ## 🛠 Prerequisites
 

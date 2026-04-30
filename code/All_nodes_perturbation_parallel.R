@@ -57,6 +57,21 @@ bnet_path <- "/home/yeohs0212/MM/IQcell/pdac_boolean_output/pdac_boolean_network
 out_dir <- "/home/yeohs0212/MM/IQcell/pdac_boolean_output/perturbation_results"
 if (!dir.exists(out_dir)) dir.create(out_dir)
 
+# Nominal 정보 저장
+bnet = loadNetwork(bnet_path)
+attr= Large_Attr(bnet)
+for (i in 1:length(bnet$genes)){
+  ca = cal_node_activity(attr,i)
+  cat(bnet$genes[i], ca, '\n')
+}
+
+normal_attr_df = data.frame(t(attr$Attr_Mat))
+colnames(normal_attr_df) = bnet$genes
+normal_attr_df['Attr_Size'] = attr$Attr_Size
+write.csv(normal_attr_df,'/home/yeohs0212/MM/IQcell/pdac_boolean_output/normal_attr_df.csv', row.names = FALSE)
+
+
+
 # ── 3. 모든 Perturbation 조합 생성 ──────────────────────────────────
 bnet <- loadNetwork(bnet_path)
 gene_names <- bnet$genes

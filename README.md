@@ -55,8 +55,9 @@ conda activate ann2bool
 | **STEP 3** | **TF-TF 네트워크 추출** | Regulon 내 TF 간 AUC 상관관계를 분석하여 활성(+) 및 억제(-) 엣지(Edge) 판별 |
 | **STEP 4** | **이진화 (Binarization)** | GMM(Gaussian Mixture Model)을 사용하여 TF 활성 스코어를 0(Off)과 1(On) 상태로 변환 |
 | **STEP 5** | **Boolean rule 학습** | **Quine-McCluskey(QMC)** 또는 **Decision Tree** 방식을 선택하여 $t \to t+1$ 전이 규칙 도출 |
-| **STEP 6** | **네트워크 정제 및 내보내기** | 고립된 상수 노드 및 무의미한 Self-loop를 제거하고 `.bnet` 파일로 저장 |
-| **STEP 7** | **attractor-cell 매핑** | 계산된 어트랙터를 Euclidean distance 기반으로 실제 UMAP 공간의 세포들과 매핑 |
+| **STEP 6** | **네트워크 정제 및 파일 내보내기** | 고립된 상수 노드 및 무의미한 Self-loop를 제거하고 `.bnet` 파일로 저장 |
+| **STEP 7** | **Attractor-cell 매핑** | 계산된 어트랙터를 Euclidean distance 기반으로 실제 UMAP 공간의 세포들과 매핑 |
+| **STEP 7.5** | **병렬 Perturbation 시뮬레이션** | **R** - `All_nodes_perturbation_parallel.R` Python에서 생성된 .bnet 파일을 로드하여 모든 노드(유전자)에 대한 Knock-out(0) 및 Overexpression(1) 시뮬레이션을 병렬로 수행. |
 | **STEP 8** | **Perturbation 및 시각화** | 유전자 Knock-out/Overexpression 시뮬레이션 결과 분석 및 네트워크 토폴로지 시각화 |
 
 ## ⚙️ 설정 (Configuration)
@@ -71,6 +72,7 @@ conda activate ann2bool
 *   `cellstate_binary_profile.csv`: 세포 타입별 대표 이진 상태 프로필
 *   `attractor_umap.pdf`: UMAP 상에 매핑된 어트랙터 위치 및 Basin 크기 시각화
 *   `perturbation_basin_summary.csv`: 각 유전자 섭동에 따른 세포 운명 변화 요약
+
 
 ---
 

@@ -2,7 +2,7 @@ library(Seurat)
 library(dplyr)
 library(ggplot2)
 library(anndata)
-
+library(tidyverse)
 data = read_h5ad("/data/yeohs0212/MM/GSE207938/03_ADM_for_trajectory.h5ad")
 library(monocle3)
 seu <- CreateSeuratObject(counts = t(as.matrix(data$X)), meta.data = data$obs)
@@ -40,5 +40,8 @@ plot_cells(cds,
 
 pt_values <- pseudotime(cds)
 pt_df <- as.data.frame(pt_values)
-colnames(pt_df) <- "pseudotime"
-write.csv(pt_df, "/data/yeohs0212/MM/GSE207938/pseudotime_results.csv")
+colnames(pt_df) <- "PT"
+
+pt_df <- pt_df %>% 
+  rownames_to_column(var = "cell_id")
+write.csv(pt_df, "/data/yeohs0212/MM/GSE207938/pseudotime_results.csv",row.names = FALSE)

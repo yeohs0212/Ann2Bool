@@ -1,7 +1,7 @@
 library(BoolNet)
 library(doParallel)
 library(foreach)
-
+set.seed(42)
 # ── 1. 함수 정의 (기존과 동일) ──────────────────────────────────
 Large_Attr = function(Network, startStates = 100000){
   attr = getAttractors(Network, method = "random", startStates = startStates)
@@ -45,6 +45,12 @@ Binary_Vector = function(Number, Length){
   }
   return(Binary)
 }
+cal_node_activity = function(k, index){
+  na = sum(k$Attr_Mat[index,] * k$Attr_Size) /sum(k$Attr_Size)
+  #print(paste(gene_list[index],"'s Node_Activity: " ,na))
+  return(na)
+}
+
 
 # ── 2. 병렬 환경 설정 ──────────────────────────────────────────────
 # 사용할 코어 수 설정 
@@ -53,13 +59,13 @@ cl <- makeCluster(num_cores)
 registerDoParallel(cl)
 
 # 작업 경로 및 설정
-bnet_path <- "/home/yeohs0212/MM/IQcell/pdac_boolean_output/pdac_boolean_network.bnet"
-out_dir <- "/home/yeohs0212/MM/IQcell/pdac_boolean_output/perturbation_results"
+bnet_path <- "/home/yeohs0212/MM/IQcell/PDAC_boolean_output/pdac_boolean_network.bnet"
+out_dir <- "/home/yeohs0212/MM/IQcell/PDAC_boolean_output/perturbation_results"
 if (!dir.exists(out_dir)) dir.create(out_dir)
 
 # Nominal 정보 저장
 bnet = loadNetwork(bnet_path)
-attr= Large_Attr(bnet)
+attr= Large_Attr(bnet,  startStates = 100000)
 for (i in 1:length(bnet$genes)){
   ca = cal_node_activity(attr,i)
   cat(bnet$genes[i], ca, '\n')
@@ -68,7 +74,7 @@ for (i in 1:length(bnet$genes)){
 normal_attr_df = data.frame(t(attr$Attr_Mat))
 colnames(normal_attr_df) = bnet$genes
 normal_attr_df['Attr_Size'] = attr$Attr_Size
-write.csv(normal_attr_df,'/home/yeohs0212/MM/IQcell/pdac_boolean_output/normal_attr_df.csv', row.names = FALSE)
+write.csv(normal_attr_df,'/home/yeohs0212/MM/IQcell/PDAC_boolean_output/normal_attr_df.csv', row.names = FALSE)
 
 
 
@@ -91,7 +97,7 @@ foreach(i = 1:nrow(tasks), .packages = "BoolNet") %dopar% {
   result <- tryCatch({
     perturb_net <- fixGenes(net, gene, val)
     # initial state 개수 1,000,000으로 설정
-    Large_Attr(perturb_net, startStates = 1000000)
+    Large_Attr(perturb_net, startStates = 100000)
   }, error = function(e) {
     return(NULL)
   })
